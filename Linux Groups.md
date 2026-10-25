@@ -1,0 +1,1 @@
+In Unix, a group is a collection of users on a system.
