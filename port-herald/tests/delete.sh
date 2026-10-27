@@ -155,6 +155,41 @@ NEW_NOTES=$(curl -sf "$BASE/api/hosts/$RID/notes" | jq 'length')
 assert_eq "Restored host has 0 notes" "0" "$NEW_NOTES"
 
 echo ""
+echo "6b. REGRESSION: delete with a port-focused assignment"
+echo "──────────────────────────────────────────"
+#
+# Previously `delete_host` tried to DELETE FROM ports before DELETE FROM
+# assignments. If an assignment had `port_id` set (focused on a specific
+# port, not just the host), SQLite blocked the port delete with FK code 787
+# because assignments.port_id → ports(id). The tests above always assigned
+# with port_id=NULL and so missed it. This case explicitly covers it.
+
+# Need a port on the restored host
+FOCUS_PORT_ID=$(curl -sf "$BASE/api/hosts/$RID" | jq '.ports[0].id')
+assert_gt "Restored host has a port to focus on" 0 "$FOCUS_PORT_ID"
+
+# Assign to that specific port
+curl -sf -X POST "$BASE/api/hosts/$RID/assign" -H "Content-Type: application/json" \
+    -d "{\"member_id\": $MID, \"port_id\": $FOCUS_PORT_ID}" > /dev/null
+
+# Confirm the assignment carries port_id
+AS_WITH_PORT=$(sqlite3 /tmp/port-herald_test.db \
+    "SELECT COUNT(*) FROM assignments WHERE host_id=$RID AND port_id=$FOCUS_PORT_ID;")
+assert_eq "Assignment row has port_id set" "1" "$AS_WITH_PORT"
+
+# Now the critical bit: delete must succeed
+HTTP=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE "$BASE/api/hosts/$RID?member_id=$MID")
+assert_eq "Delete returns 200 even with port-focused assignment" "200" "$HTTP"
+
+# Verify everything cascaded
+assert_eq "No port rows left for deleted host" "0" \
+    "$(sqlite3 /tmp/port-herald_test.db "SELECT COUNT(*) FROM ports WHERE host_id=$RID;")"
+assert_eq "No assignment rows left for deleted host" "0" \
+    "$(sqlite3 /tmp/port-herald_test.db "SELECT COUNT(*) FROM assignments WHERE host_id=$RID;")"
+assert_eq "No orphaned assignment port_id references" "0" \
+    "$(sqlite3 /tmp/port-herald_test.db "SELECT COUNT(*) FROM assignments WHERE port_id IS NOT NULL AND port_id NOT IN (SELECT id FROM ports);")"
+
+echo ""
 echo "7. FRONTEND WIRING"
 echo "──────────────────────────────────────────"
 

@@ -339,22 +339,30 @@ pub async fn get_host_by_id(pool: &SqlitePool, host_id: i64) -> Result<Option<Ho
 /// Delete a host and everything owned by it. Blame-log entries referring to
 /// the host are preserved (target_label will resolve to NULL on future joins).
 pub async fn delete_host(pool: &SqlitePool, host_id: i64) -> Result<()> {
-    // Child tables first — FKs are NOT NULL and sqlx-sqlite enforces them.
+    // Order matters: `assignments` has FKs to BOTH hosts and ports, so it has
+    // to go before ports. `script_results` is a child of ports and goes first.
+    //
+    //   script_results → ports → hosts
+    //   assignments    → ports → hosts     (also references hosts directly)
+    //   host_notes     → hosts
+    //
+    // sqlx-sqlite enforces FKs by default, so getting this order wrong raises
+    // code 787.
     sqlx::query(
         "DELETE FROM script_results WHERE port_id IN (SELECT id FROM ports WHERE host_id = ?)",
     )
     .bind(host_id)
     .execute(pool)
     .await?;
-    sqlx::query("DELETE FROM ports WHERE host_id = ?")
-        .bind(host_id)
-        .execute(pool)
-        .await?;
     sqlx::query("DELETE FROM assignments WHERE host_id = ?")
         .bind(host_id)
         .execute(pool)
         .await?;
     sqlx::query("DELETE FROM host_notes WHERE host_id = ?")
+        .bind(host_id)
+        .execute(pool)
+        .await?;
+    sqlx::query("DELETE FROM ports WHERE host_id = ?")
         .bind(host_id)
         .execute(pool)
         .await?;
