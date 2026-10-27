@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Port Herald</title>
+    <meta name="theme-color" content="#0E6DCC">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quattrocento:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-brand">
+                <img class="sidebar-logo logo-dark" src="/img/logo-dark-cropped.png" alt="Port Herald">
+                <img class="sidebar-logo logo-light" src="/img/logo-light-cropped.png" alt="Port Herald">
+                <span class="sidebar-wordmark">Port Herald</span>
+            </div>
+            <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Toggle sidebar" title="Collapse / expand sidebar">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                    <line x1="3" y1="6" x2="21" y2="6"/>
+                    <line x1="3" y1="12" x2="21" y2="12"/>
+                    <line x1="3" y1="18" x2="21" y2="18"/>
+                </svg>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <button class="nav-item active" data-tab="topology">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="18" r="3"/><line x1="9" y1="6" x2="15" y2="6"/><line x1="6" y1="9" x2="6" y2="15"/><line x1="18" y1="9" x2="18" y2="15"/><line x1="9" y1="18" x2="15" y2="18"/></svg>
+                <span>Topology</span>
+            </button>
+            <button class="nav-item" data-tab="hosts">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                <span>Hosts</span>
+            </button>
+            <button class="nav-item" data-tab="team">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <span>Team</span>
+            </button>
+            <button class="nav-item" data-tab="scanner">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                <span>Scanner</span>
+            </button>
+            <button class="nav-item" data-tab="active">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>Active Scans</span>
+                <span id="active-scans-badge" class="nav-badge" style="display:none">0</span>
+            </button>
+            <button class="nav-item" data-tab="import">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <span>Import</span>
+            </button>
+            <button class="nav-item" data-tab="export">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Export</span>
+            </button>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="current-user-wrap">
+                <label>You</label>
+                <select id="current-user-select">
+                    <option value="">Not set</option>
+                </select>
+            </div>
+            <button id="theme-toggle" class="nav-item" title="Toggle light/dark mode">
+                <svg id="theme-icon-dark" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                <svg id="theme-icon-light" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <span>Theme</span>
+            </button>
+        </div>
+    </aside>
+
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <!-- Main content -->
+    <main class="main">
+        <header class="topbar">
+            <button id="hamburger" class="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+            <h1 class="topbar-title" id="page-title">Network Topology</h1>
+        </header>
+
+        <div class="content">
+            <!-- Topology -->
+            <div id="topology-tab" class="tab-content active">
+                <div class="controls">
+                    <button id="refresh-topology" class="btn btn-primary">Refresh</button>
+                </div>
+                <div id="topology-stats" class="stats-panel"></div>
+                <div id="topology-graph" class="graph-container"></div>
+            </div>
+
+            <!-- Hosts -->
+            <div id="hosts-tab" class="tab-content">
+                <div class="controls">
+                    <input type="text" id="host-search" placeholder="Search by IP, hostname, service, or teammate...">
+                    <button id="refresh-hosts" class="btn btn-primary">Refresh</button>
+                </div>
+                <div id="hosts-list" class="hosts-container"></div>
+            </div>
+
+            <!-- Team -->
+            <div id="team-tab" class="tab-content">
+                <div class="card">
+                    <h2>Add Team Members</h2>
+                    <p class="muted">Enter one name per line, or separated by commas. Each member gets an auto-assigned icon.</p>
+                    <div class="form-group">
+                        <textarea id="members-input" rows="4" placeholder="Alice&#10;Bob&#10;Charlie"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="members-file">Or upload a .txt file (one name per line)</label>
+                        <input type="file" id="members-file" accept=".txt">
+                    </div>
+                    <button id="add-members-btn" class="btn btn-accent">Add Members</button>
+                </div>
+
+                <div id="team-roster" class="card" style="margin-top:20px">
+                    <h2>Team Roster</h2>
+                    <div id="team-list"></div>
+                </div>
+
+                <div id="blame-section" class="card" style="margin-top:20px">
+                    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+                        <h2 style="margin:0">Blame Log</h2>
+                        <select id="blame-filter">
+                            <option value="">All members</option>
+                        </select>
+                    </div>
+                    <div id="blame-list" style="margin-top:12px"></div>
+                </div>
+            </div>
+
+            <!-- Scanner -->
+            <div id="scanner-tab" class="tab-content">
+                <div class="scanner-form card">
+                    <h2>Configure Scan</h2>
+                    <div class="form-group">
+                        <label for="scan-targets">Targets (CIDR, IP ranges, or hostnames)</label>
+                        <textarea id="scan-targets" rows="3" placeholder="192.168.1.0/24&#10;10.0.0.1-50&#10;example.com"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="scan-exclusions">Excluded Targets (optional)</label>
+                        <textarea id="scan-exclusions" rows="2" placeholder="192.168.1.1&#10;192.168.1.254"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="scan-type">Scan Type</label>
+                            <select id="scan-type">
+                                <option value="syn" selected>SYN (-sS)</option>
+                                <option value="connect">Connect (-sT)</option>
+                                <option value="ack">ACK (-sA)</option>
+                                <option value="window">Window (-sW)</option>
+                                <option value="maimon">Maimon (-sM)</option>
+                                <option value="null">Null (-sN)</option>
+                                <option value="fin">FIN (-sF)</option>
+                                <option value="xmas">Xmas (-sX)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="timing">Timing</label>
+                            <select id="timing">
+                                <option value="Paranoid">Paranoid (-T0)</option>
+                                <option value="Sneaky">Sneaky (-T1)</option>
+                                <option value="Polite">Polite (-T2)</option>
+                                <option value="Normal" selected>Normal (-T3)</option>
+                                <option value="Aggressive">Aggressive (-T4)</option>
+                                <option value="Insane">Insane (-T5)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group checkbox-row">
+                        <label class="checkbox-label"><input type="checkbox" id="version-detection" checked> Version Detection</label>
+                        <label class="checkbox-label"><input type="checkbox" id="os-detection"> OS Detection</label>
+                        <label class="checkbox-label"><input type="checkbox" id="script-scan" checked> Script Scan</label>
+                        <label class="checkbox-label"><input type="checkbox" id="udp-scan"> UDP Scan</label>
+                    </div>
+                    <h3>Firewall / IDS Evasion</h3>
+                    <div class="form-group">
+                        <label class="checkbox-label"><input type="checkbox" id="evasion-enabled"> Enable Evasion Techniques</label>
+                    </div>
+                    <div id="evasion-options" style="display:none">
+                        <div class="form-row">
+                            <div class="form-group"><label for="source-port">Source Port</label><input type="number" id="source-port" placeholder="53, 80, 443..."></div>
+                            <div class="form-group"><label for="dns-servers">DNS Servers</label><input type="text" id="dns-servers" placeholder="8.8.8.8, 1.1.1.1"></div>
+                        </div>
+                        <div class="form-group"><label for="max-rate">Max Rate (pkt/s)</label><input type="number" id="max-rate" placeholder="1000"></div>
+                    </div>
+                    <button id="start-scan" class="btn btn-accent btn-large">Launch Scan</button>
+                </div>
+                <div id="scanner-launch-notice" class="result-panel" style="display:none"></div>
+            </div>
+
+            <!-- Active Scans -->
+            <div id="active-tab" class="tab-content">
+                <div class="controls">
+                    <button id="refresh-active" class="btn btn-primary">Refresh</button>
+                    <label class="checkbox-label" style="margin-left:auto">
+                        <input type="checkbox" id="auto-scroll-logs" checked>
+                        Auto-scroll console
+                    </label>
+                </div>
+                <div id="active-scans-list"></div>
+            </div>
+
+            <!-- Import -->
+            <div id="import-tab" class="tab-content">
+                <div class="card">
+                    <h2>Import Nmap XML</h2>
+                    <p class="muted">Upload or paste Nmap XML output.</p>
+                    <div class="form-group">
+                        <label for="xml-file">Upload XML File</label>
+                        <input type="file" id="xml-file" accept=".xml">
+                    </div>
+                    <div class="form-group">
+                        <label for="xml-paste">Or Paste XML Content</label>
+                        <textarea id="xml-paste" rows="12" placeholder="&lt;?xml version='1.0'?&gt;&#10;&lt;nmaprun&gt;..."></textarea>
+                    </div>
+                    <button id="import-xml" class="btn btn-accent">Import Scan</button>
+                    <div id="import-result" class="result-panel"></div>
+                </div>
+            </div>
+
+            <!-- Export -->
+            <div id="export-tab" class="tab-content">
+                <div class="card">
+                    <h2>Export Full Database</h2>
+                    <p class="muted">Download the complete database (hosts, ports, scripts, assignments, notes, blame log, scans).</p>
+                    <div class="export-buttons">
+                        <a href="/api/export/json" class="btn btn-primary" download>JSON</a>
+                        <a href="/api/export/xml" class="btn btn-primary" download>XML</a>
+                        <a href="/api/export/txt" class="btn btn-primary" download>TXT</a>
+                    </div>
+                </div>
+                <div class="card" style="margin-top:20px">
+                    <h2>Export Notes Only</h2>
+                    <p class="muted">All notes across all hosts, by all team members.</p>
+                    <div class="export-buttons">
+                        <a href="/api/notes/export/json" class="btn btn-primary" download>JSON</a>
+                        <a href="/api/notes/export/xml" class="btn btn-primary" download>XML</a>
+                        <a href="/api/notes/export/txt" class="btn btn-primary" download>TXT</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Host Detail Modal -->
+    <div id="host-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close-btn">&times;</button>
+            <div id="host-detail"></div>
+        </div>
+    </div>
+
+    <!-- Icon Picker Modal -->
+    <div id="icon-picker-modal" class="modal">
+        <div class="modal-content" style="max-width:560px">
+            <button class="modal-close" id="icon-picker-close">&times;</button>
+            <h2>Pick an icon <span class="muted" id="icon-picker-name"></span></h2>
+            <p class="muted" style="font-size:.85rem">Click an emoji below, type any emoji in the box, or upload a square PNG/SVG.</p>
+
+            <div id="icon-grid" class="icon-grid"></div>
+
+            <div class="icon-custom-row">
+                <label for="icon-custom-input">Custom emoji / short text</label>
+                <input id="icon-custom-input" placeholder="e.g. 🥷 or ‡" maxlength="8">
+                <button id="icon-save-custom" class="btn btn-accent">Save</button>
+            </div>
+
+            <div class="icon-upload-row">
+                <label for="icon-upload-input">Or upload an image (PNG/SVG, square, max 50 KB)</label>
+                <input id="icon-upload-input" type="file" accept="image/png,image/svg+xml,image/jpeg,image/webp">
+                <span class="muted" id="icon-upload-status" style="font-size:.8rem"></span>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>

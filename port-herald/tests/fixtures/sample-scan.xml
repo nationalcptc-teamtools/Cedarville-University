@@ -1,0 +1,107 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet href="file:///opt/homebrew/share/nmap/nmap.xsl" type="text/xsl"?>
+<!-- Nmap 4.53 scan initiated Sun Jan 27 21:10:02 2008 as: nmap -A -v -oX sample-03.xml freshmeat.net sourceforge.net nmap.org kernel.org openbsd.org netbsd.org google.com gmail.com -->
+<nmaprun scanner="nmap" args="nmap -A -v -oX sample-03.xml freshmeat.net sourceforge.net nmap.org kernel.org openbsd.org netbsd.org google.com gmail.com" start="1201479002" startstr="Sun Jan 27 21:10:02 2008" version="4.53" xmloutputversion="1.01">
+<scaninfo type="syn" protocol="tcp" numservices="1714" services="1-1027" />
+<verbose level="1" />
+<debugging level="0" />
+<host><status state="up" reason="reset"/>
+<address addr="66.35.250.168" addrtype="ipv4" />
+<hostnames><hostname name="freshmeat.net" type="PTR" /></hostnames>
+<ports><extraports state="filtered" count="1712">
+<extrareasons reason="host-prohibiteds" count="1712"/>
+</extraports>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="45"/><service name="http" product="Apache httpd" version="1.3.39" extrainfo="(Unix) PHP/4.4.7" method="probed" conf="10" /><script id="robots.txt" output="User-Agent: * /img/ /redir/ " /><script id="HTML title" output="freshmeat.net: Welcome to freshmeat.net" /></port>
+<port protocol="tcp" portid="443"><state state="closed" reason="reset" reason_ttl="46"/><service name="https" method="table" conf="3" /></port>
+</ports>
+<os><osmatch name="Linux 2.6.5 - 2.6.18" accuracy="94" line="11411"/></os>
+</host>
+<host><status state="up" reason="reset"/>
+<address addr="66.35.250.203" addrtype="ipv4" />
+<hostnames><hostname name="sourceforge.net" type="PTR" /></hostnames>
+<ports>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="44"/><service name="http" product="lighttpd" version="1.4.18" method="probed" conf="10" /><script id="HTML title" output="Site doesn't have a title." /><script id="robots.txt" output="User-agent: * /forum /pm /search /softwaremap /top /tracker /users " /></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="44"/><service name="http" product="lighttpd" version="1.4.18" tunnel="ssl" method="probed" conf="10" /><script id="SSLv2" output="server still supports SSLv2" /><script id="HTML title" output="Site doesn't have a title." /></port>
+<port protocol="tcp" portid="563"><state state="closed" reason="reset" reason_ttl="45"/><service name="snews" method="table" conf="3" /></port>
+</ports>
+<os><osmatch name="Linux 2.6.17 - 2.6.18" accuracy="94" line="9533"/></os>
+</host>
+<host><status state="up" reason="reset"/>
+<address addr="64.13.134.48" addrtype="ipv4" />
+<hostnames />
+<ports>
+<port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="48"/><service name="ssh" product="OpenSSH" version="4.3" extrainfo="protocol 2.0" method="probed" conf="10" /></port>
+<port protocol="tcp" portid="25"><state state="closed" reason="reset" reason_ttl="47"/><service name="smtp" method="table" conf="3" /></port>
+<port protocol="tcp" portid="53"><state state="open" reason="syn-ack" reason_ttl="47"/><service name="domain" method="probed" conf="10" /></port>
+<port protocol="tcp" portid="70"><state state="closed" reason="reset" reason_ttl="47"/><service name="gopher" method="table" conf="3" /></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="47"/><service name="http" product="Apache httpd" version="2.2.2" extrainfo="(Fedora)" method="probed" conf="10" /><script id="HTML title" output="Nmap - Free Security Scanner For Network Exploration &amp; Security Audits" /></port>
+<port protocol="tcp" portid="113"><state state="closed" reason="reset" reason_ttl="47"/><service name="auth" method="table" conf="3" /></port>
+</ports>
+<os><osmatch name="Linux 2.6.17 - 2.6.21" accuracy="100" line="9847" /></os>
+</host>
+<host><status state="up" reason="reset"/>
+<address addr="204.152.191.37" addrtype="ipv4" />
+<hostnames><hostname name="pub2.kernel.org" type="PTR" /></hostnames>
+<ports>
+<port protocol="tcp" portid="21"><state state="open" reason="syn-ack" reason_ttl="50"/><service name="ftp" product="vsftpd or WU-FTPD" hostname="Welcome" method="probed" conf="10" /><script id="Anonymous FTP" output="FTP: Anonymous login allowed" /></port>
+<port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="50"/><service name="ssh" product="OpenSSH" version="4.3" extrainfo="protocol 2.0" method="probed" conf="10" /></port>
+<port protocol="tcp" portid="79"><state state="open" reason="syn-ack" reason_ttl="50"/><service name="finger" method="table" conf="3" /></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="50"/><service name="http" product="Apache httpd" version="2.2.2" extrainfo="(Fedora)" method="probed" conf="10" /><script id="robots.txt" output="/cgi-bin/ /pub/mirrors/ /pub/scm/ /mirrors/process-registration.cgi" /><script id="HTML title" output="The Linux Kernel Archives" /></port>
+<port protocol="tcp" portid="199"><state state="open" reason="syn-ack" reason_ttl="50"/><service name="smux" product="Linux SNMP multiplexer" ostype="Linux" method="probed" conf="10" /></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="50"/><service name="https" tunnel="ssl" method="table" conf="3" /><script id="HTML title" output="The Linux Kernel Archives" /></port>
+<port protocol="tcp" portid="873"><state state="open" reason="syn-ack" reason_ttl="53"/><service name="rsync" extrainfo="protocol version 29" method="probed" conf="10" /></port>
+<port protocol="tcp" portid="1720"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="H.323/Q.931" method="table" conf="3" /></port>
+<port protocol="tcp" portid="5978"><state state="open" reason="syn-ack" reason_ttl="50"/><service name="ncd-diag-tcp" method="table" conf="3" /></port>
+<port protocol="tcp" portid="7000"><state state="open" reason="syn-ack" reason_ttl="53"/><service name="afs3-fileserver" method="table" conf="3" /></port>
+</ports>
+<os><osmatch name="Linux 2.6.5 - 2.6.9" accuracy="91" line="11429"/></os>
+</host>
+<host><status state="up" reason="echo-reply"/>
+<address addr="199.185.137.3" addrtype="ipv4" />
+<hostnames><hostname name="cvs.openbsd.org" type="PTR" /></hostnames>
+<ports>
+<port protocol="tcp" portid="21"><state state="open" reason="syn-ack" reason_ttl="48"/><service name="ftp" product="bsd-ftpd" hostname="cvs.openbsd.org" ostype="Linux" method="probed" conf="10" /></port>
+<port protocol="tcp" portid="25"><state state="open" reason="syn-ack" reason_ttl="46"/><service name="smtp" product="OpenBSD spamd" method="probed" conf="10" /><script id="SMTP" output="EHLO with errors or timeout." /></port>
+<port protocol="tcp" portid="53"><state state="open" reason="syn-ack" reason_ttl="45"/><service name="domain" product="ISC BIND" version="9.X" method="probed" conf="10" /><script id="zone-transfer" output="openbsd.org. SOA zeus.theos.com. root.theos.com. ..." /></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="48"/><service name="http" product="Apache httpd" method="probed" conf="10" /><script id="robots.txt" output="/cgi-bin/ /faq/new/ /donations.html" /><script id="HTML title" output="OpenBSD" /></port>
+<port protocol="tcp" portid="7326"><state state="open" reason="syn-ack" reason_ttl="45"/><service name="icb" method="table" conf="3" /></port>
+</ports>
+</host>
+<host><status state="up" reason="reset"/>
+<address addr="204.152.190.12" addrtype="ipv4" />
+<hostnames><hostname name="www.netbsd.org" type="PTR" /></hostnames>
+<ports>
+<port protocol="tcp" portid="22"><state state="open" reason="syn-ack" reason_ttl="46"/><service name="ssh" product="OpenSSH" version="4.4" extrainfo="NetBSD 20061114; protocol 2.0" ostype="NetBSD" method="probed" conf="10" /></port>
+<port protocol="tcp" portid="25"><state state="open" reason="syn-ack" reason_ttl="46"/><service name="smtp" product="Postfix smtpd" hostname="narn.NetBSD.org" method="probed" conf="10" /><script id="SMTP" output="HELP with errors or timeout." /></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="46"/><service name="http" product="Apache httpd" version="2.0.61" extrainfo="(Unix) mod_ssl/2.0.61 DAV/2 mod_fastcgi/2.4.2" method="probed" conf="10" /><script id="HTML title" output="The NetBSD Project" /></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="46"/><service name="http" product="Apache httpd" version="2.0.61" extrainfo="mod_ssl/2.0.61 DAV/2" hostname="rt.NetBSD.org" method="probed" conf="10" /><script id="HTML title" output="400 Bad Request" /><script id="SSLv2" output="server still supports SSLv2" /></port>
+<port protocol="tcp" portid="871"><state state="open" reason="syn-ack" reason_ttl="46"/><service name="supfilesrv" method="table" conf="3" /></port>
+<port protocol="tcp" portid="874"><state state="open" reason="syn-ack" reason_ttl="46"/><service name="rsync" extrainfo="protocol version 29" method="probed" conf="10" /></port>
+<port protocol="tcp" portid="1720"><state state="filtered" reason="no-response" reason_ttl="0"/><service name="H.323/Q.931" method="table" conf="3" /></port>
+<port protocol="tcp" portid="1984"><state state="open" reason="syn-ack" reason_ttl="46"/><service name="tcpwrapped" method="probed" conf="8" /></port>
+<port protocol="tcp" portid="2022"><state state="open" reason="syn-ack" reason_ttl="46"/><service name="ssh" product="OpenSSH" version="4.4" extrainfo="NetBSD 20061114; protocol 2.0" ostype="NetBSD" method="probed" conf="10" /></port>
+</ports>
+<os><osmatch name="NetBSD 4.99.4 (x86)" accuracy="90" line="15307"/></os>
+</host>
+<host><status state="up" reason="reset"/>
+<address addr="72.14.207.99" addrtype="ipv4" />
+<hostnames><hostname name="eh-in-f99.google.com" type="PTR" /></hostnames>
+<ports>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="49"/><service name="http" product="Google httpd" version="1.3" extrainfo="GFE" ostype="Linux" method="probed" conf="10" /><script id="HTML title" output="302 Moved" /></port>
+<port protocol="tcp" portid="113"><state state="closed" reason="reset" reason_ttl="245"/><service name="auth" method="table" conf="3" /></port>
+<port protocol="tcp" portid="179"><state state="closed" reason="reset" reason_ttl="240"/><service name="bgp" method="table" conf="3" /></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="49"/><service name="http" product="Google httpd" version="1.3" extrainfo="GFE" ostype="Linux" tunnel="ssl" method="probed" conf="10" /><script id="SSLv2" output="server still supports SSLv2" /><script id="HTML title" output="302 Moved" /></port>
+</ports>
+</host>
+<host><status state="up" reason="reset"/>
+<address addr="72.14.253.83" addrtype="ipv4" />
+<hostnames><hostname name="po-in-f83.google.com" type="PTR" /></hostnames>
+<ports>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="46"/><service name="http" product="Google httpd" version="1.3" extrainfo="GFE" ostype="Linux" method="probed" conf="10" /><script id="HTML title" output="302 Moved" /><script id="robots.txt" output="/news /search /groups /images /catalogs ..." /></port>
+<port protocol="tcp" portid="113"><state state="closed" reason="reset" reason_ttl="246"/><service name="auth" method="table" conf="3" /></port>
+<port protocol="tcp" portid="179"><state state="closed" reason="reset" reason_ttl="237"/><service name="bgp" method="table" conf="3" /></port>
+<port protocol="tcp" portid="443"><state state="open" reason="syn-ack" reason_ttl="46"/><service name="https" tunnel="ssl" method="table" conf="3" /><script id="HTML title" output="302 Moved" /><script id="SSLv2" output="server still supports SSLv2" /></port>
+</ports>
+</host>
+<runstats><finished time="1201481569" timestr="Sun Jan 27 21:52:49 2008"/><hosts up="8" down="0" total="8" /></runstats>
+</nmaprun>

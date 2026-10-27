@@ -1,0 +1,114 @@
+#!/bin/bash
+# Port Herald — convenience wrapper for common operations.
+#
+# Invoke with:   ./port-herald <command> [args]
+#
+# All commands are thin wrappers around the release binary, the helper
+# Python script in scripts/, or the test runner in tests/.
+
+set -eu
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+BINARY="$SCRIPT_DIR/target/release/port-herald"
+HELPER="$SCRIPT_DIR/scripts/port-herald-helper.py"
+DB_DIR="$HOME/.port-herald"
+DEFAULT_DB="$DB_DIR/port-herald.db"
+
+RED='\033[0;31m'; GREEN='\033[0;32m'; BLUE='\033[0;34m'; NC='\033[0m'
+
+print_help() {
+cat <<EOF
+${GREEN}Port Herald${NC} — network reconnaissance & team collaboration platform
+
+Usage: $0 <command> [args]
+
+Server
+  start [--database PATH] [--bind ADDR] [--port N]
+                      Start the server (defaults: ~/.port-herald/port-herald.db, 127.0.0.1:8080)
+  build               Build the release binary
+  install             Run tests/install.sh for a Kali setup
+
+Database helpers (require a populated DB)
+  stats               Summary statistics (hosts / ports / services / networks / scans)
+  find-port N         List all hosts with port N open
+  find-service NAME   List all hosts running a service matching NAME
+  networks            List every discovered network and its host count
+  export-hosts FILE   Dump the host table to CSV
+  export-ports FILE   Dump open ports (joined with host IPs) to CSV
+
+Testing
+  test [SUITE]        Run all test suites (or just one: backend|frontend|os|team|scan|ui|icon)
+
+Other
+  help                Show this message
+EOF
+}
+
+check_binary() {
+    if [ ! -x "$BINARY" ]; then
+        echo -e "${RED}Binary not found at $BINARY${NC}" >&2
+        echo "Run: $0 build" >&2
+        exit 1
+    fi
+}
+
+cmd_build() {
+    cd "$SCRIPT_DIR"
+    echo -e "${BLUE}Building release binary…${NC}"
+    cargo build --release
+    echo -e "${GREEN}✓ Binary: $BINARY${NC}"
+}
+
+cmd_install() {
+    cd "$SCRIPT_DIR"
+    exec ./install.sh "$@"
+}
+
+cmd_test() {
+    cd "$SCRIPT_DIR"
+    exec bash tests/run_all.sh "$@"
+}
+
+cmd_start() {
+    check_binary
+    mkdir -p "$DB_DIR"
+    local DATABASE="$DEFAULT_DB"
+    local BIND="127.0.0.1"
+    local PORT="8080"
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            --database) DATABASE="$2"; shift 2;;
+            --bind)     BIND="$2";     shift 2;;
+            --port)     PORT="$2";     shift 2;;
+            *) echo -e "${RED}Unknown option: $1${NC}" >&2; exit 1;;
+        esac
+    done
+    echo -e "${GREEN}Starting Port Herald${NC}"
+    echo -e "  Database  ${BLUE}$DATABASE${NC}"
+    echo -e "  Listening ${BLUE}http://$BIND:$PORT${NC}"
+    echo ""
+    exec "$BINARY" --database "$DATABASE" --bind "$BIND" --port "$PORT"
+}
+
+cmd_helper() {
+    if [ ! -f "$DEFAULT_DB" ]; then
+        echo -e "${RED}Database not found at $DEFAULT_DB${NC}" >&2
+        echo "Start the server once to create it, or pass --database explicitly." >&2
+        exit 1
+    fi
+    exec python3 "$HELPER" "$@"
+}
+
+CMD="${1:-help}"
+shift || true
+case "$CMD" in
+    start)                          cmd_start "$@" ;;
+    build)                          cmd_build ;;
+    install)                        cmd_install "$@" ;;
+    test)                           cmd_test "$@" ;;
+    stats|networks)                 cmd_helper "$CMD" "$@" ;;
+    find-port|find-service)         cmd_helper "$CMD" "$@" ;;
+    export-hosts|export-ports)      cmd_helper "$CMD" "$@" ;;
+    help|--help|-h)                 print_help ;;
+    *) echo -e "${RED}Unknown command: $CMD${NC}" >&2; echo ""; print_help; exit 1 ;;
+esac
